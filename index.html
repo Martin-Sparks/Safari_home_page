@@ -2,103 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <style>
-        :root { --bg: #0a0b10; --accent: #00d4ff; --glass: rgba(255, 255, 255, 0.05); }
-        body {
-            background-color: var(--bg);
-            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%);
-            color: #fff; font-family: -apple-system, sans-serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; margin: 0;
-        }
-        .container {
-            background: var(--glass); backdrop-filter: blur(20px);
-            padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
-            width: 500px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-        #clock { font-size: 5rem; font-weight: 800; letter-spacing: -3px; margin-bottom: 0; color: var(--accent); }
-        #date { opacity: 0.5; margin-bottom: 30px; font-size: 0.9rem; text-transform: uppercase; }
-        
-        .search-bar { width: 100%; padding: 15px; border-radius: 15px; border: none; background: rgba(0,0,0,0.3); color: white; margin-bottom: 25px; outline: none; border: 1px solid transparent; transition: 0.3s; }
-        .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,212,255,0.2); }
-
-        .ticker-wrap { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
-        #ticker { font-size: 0.85rem; color: #bbb; white-space: nowrap; }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        a { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; color: #fff; text-decoration: none; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
-        a:hover { background: var(--accent); color: #000; font-weight: bold; }
-        .user-greeting {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: -10px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    
-    background: linear-gradient(to right, #fff, var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    
-    text-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
-    animation: fadeIn 1.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h1 class="user-greeting">Hello, Martin</h1>
-    <div id="clock">00:00</div>
-    <div id="date">Loading Date...</div>
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
 
-    <form action="https://www.google.com/search" method="GET">
-        <input type="text" name="q" class="search-bar" placeholder="Search Google..." autofocus>
+<main>
+    <div class="time-section">
+        <p class="greeting" id="greeting">Hello, Martin</p>
+        <h1 class="clock" id="clock">00:00</h1>
+        <p class="date" id="date">Loading...</p>
+    </div>
+
+    <form class="search-form" action="https://www.google.com/search" method="GET">
+        <div class="search-wrap">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" name="q" class="search-input" placeholder="Search Google..." autofocus>
+        </div>
     </form>
 
-    <div class="ticker-wrap">
-        <div id="ticker">Fetching Hacker News...</div>
+    <div class="shortcuts">
+        <a href="https://reddit.com" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=reddit.com&sz=64" alt="">
+            <span>Reddit</span>
+        </a>
+        <a href="https://github.com" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=github.com&sz=64" alt="">
+            <span>GitHub</span>
+        </a>
+        <a href="https://instagram.com" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=instagram.com&sz=64" alt="">
+            <span>Instagram</span>
+        </a>
+        <a href="https://gemini.google.com" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64" alt="">
+            <span>Gemini</span>
+        </a>
+        <a href="https://youtube.com" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=64" alt="">
+            <span>YouTube</span>
+        </a>
+        <a href="https://app.plex.tv/desktop/#!" class="shortcut">
+            <img src="https://www.google.com/s2/favicons?domain=plex.tv&sz=64" alt="">
+            <span>Plex</span>
+        </a>
     </div>
+</main>
 
-    <div class="grid">
-        <a href="https://reddit.com">Reddit</a>
-        <a href="https://github.com">GitHub</a>
-        <a href="https://instagram.com">Instagram</a>
-        <a href="https://gemini.google.com">Gemini</a>
-        <a href="https://youtube.com">YouTube</a>
-        <a href="https://app.plex.tv/desktop/#!">Plex</a>
+<footer class="ticker-bar">
+    <span class="ticker-label">HN</span>
+    <div class="ticker-viewport">
+        <div class="ticker-track" id="ticker-track">Fetching Hacker News...</div>
     </div>
-</div>
+</footer>
 
-<script>
-    // Update Time
-    function updateTime() {
-        const now = new Date();
-        document.getElementById('clock').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        document.getElementById('date').textContent = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    // Fetch Hacker News via RSS to JSON Proxy
-    async function fetchNews() {
-        try {
-            const rssUrl = encodeURIComponent('https://news.ycombinator.com/rss');
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
-            const data = await response.json();
-            const titles = data.items.map(item => item.title).join(" • ");
-            document.getElementById('ticker').innerHTML = `<marquee scrollamount="4">${titles}</marquee>`;
-        } catch (e) {
-            document.getElementById('ticker').textContent = "News feed temporarily offline";
-        }
-    }
-    fetchNews();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
