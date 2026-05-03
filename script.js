@@ -57,11 +57,10 @@ async function fetchWeather() {
 }
 fetchWeather();
 
-// Daily background via Unsplash
+// Daily background via Lorem Picsum
 function fetchDailyBackground() {
-    const today = new Date().toDateString();
-    const seed = today.replace(/\s/g, '-');
-    const url = `https://source.unsplash.com/1920x1080/?landscape,nature,scotland&sig=${seed}`;
+    const seed = new Date().toDateString().replace(/\s/g, '-');
+    const url = `https://picsum.photos/seed/${seed}/1920/1080`;
     document.body.style.backgroundImage = `url(${url})`;
 }
 fetchDailyBackground();

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Background Tests</title>
+    <style>
+        body { font-family: monospace; background: #111; color: #eee; padding: 2rem; }
+        .test { margin: 1rem 0; padding: 1rem; border-radius: 8px; background: #1e1e1e; }
+        .pass { border-left: 4px solid #4ade80; }
+        .fail { border-left: 4px solid #f87171; }
+        .pending { border-left: 4px solid #facc15; }
+        label { font-weight: bold; display: block; margin-bottom: 0.4rem; }
+        pre { font-size: 0.8rem; color: #aaa; margin-top: 0.4rem; word-break: break-all; white-space: pre-wrap; }
+        #preview { margin-top: 2rem; width: 100%; height: 300px; border-radius: 12px; background: #333 center/cover no-repeat; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <h2>Unsplash Background — Diagnostics</h2>
+
+    <div class="test pending" id="t1">
+        <label>1. URL generation</label>
+        <pre id="t1-out">running...</pre>
+    </div>
+
+    <div class="test pending" id="t2">
+        <label>2. Image loads via &lt;img&gt; tag (browser redirect handling)</label>
+        <pre id="t2-out">running...</pre>
+    </div>
+
+    <div class="test pending" id="t3">
+        <label>3. CSS background-image set on element</label>
+        <pre id="t3-out">running...</pre>
+    </div>
+
+    <div class="test pending" id="t4">
+        <label>4. fetch() resolves URL (CORS check)</label>
+        <pre id="t4-out">running...</pre>
+    </div>
+
+    <div id="preview"></div>
+    <p style="color:#666; font-size:0.8rem; margin-top:0.5rem">Preview (should show image if test 2 passes)</p>
+
+    <script>
+        function pass(id, msg) {
+            document.getElementById(id).className = 'test pass';
+            document.getElementById(`${id}-out`).textContent = msg;
+        }
+        function fail(id, msg) {
+            document.getElementById(id).className = 'test fail';
+            document.getElementById(`${id}-out`).textContent = msg;
+        }
+
+        // Test 1: URL generation
+        const today = new Date().toDateString();
+        const seed = today.replace(/\s/g, '-');
+        const url = `https://picsum.photos/seed/${seed}/1920/1080`;
+
+        if (url.includes('source.unsplash.com') && url.includes(seed)) {
+            pass('t1', `URL: ${url}`);
+        } else {
+            fail('t1', `Unexpected URL: ${url}`);
+        }
+
+        // Test 2: Image loads via <img> (browser handles redirect natively)
+        const img = new Image();
+        img.onload = () => {
+            pass('t2', `Image loaded — naturalWidth: ${img.naturalWidth}px`);
+            document.getElementById('preview').style.backgroundImage = `url(${img.src})`;
+        };
+        img.onerror = (e) => {
+            fail('t2', `Image failed to load from: ${url}\nThis likely means source.unsplash.com is blocking the request or is deprecated.`);
+        };
+        img.src = url;
+
+        // Test 3: CSS background-image applied to element
+        const el = document.getElementById('preview');
+        el.style.backgroundImage = `url(${url})`;
+        const applied = el.style.backgroundImage;
+        if (applied && applied.includes('unsplash.com')) {
+            pass('t3', `backgroundImage set: ${applied}`);
+        } else {
+            fail('t3', `backgroundImage not applied. Got: "${applied}"`);
+        }
+
+        // Test 4: fetch() CORS check — can we get the resolved URL?
+        fetch(url)
+            .then(res => {
+                if (res.url && res.url !== url) {
+                    pass('t4', `Redirected to: ${res.url}`);
+                } else if (res.url === url) {
+                    fail('t4', `No redirect followed — res.url same as request URL. CORS is likely blocking the redirect chain.\nfinal url: ${res.url}\nstatus: ${res.status}`);
+                } else {
+                    pass('t4', `Response OK — status: ${res.status}`);
+                }
+            })
+            .catch(err => {
+                fail('t4', `fetch() threw: ${err.message}`);
+            });
+    </script>
+</body>
+</html>
