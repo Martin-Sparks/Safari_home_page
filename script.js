@@ -58,23 +58,10 @@ async function fetchWeather() {
 fetchWeather();
 
 // Daily background via Unsplash
-async function fetchDailyBackground() {
+function fetchDailyBackground() {
     const today = new Date().toDateString();
-    const cachedDate = localStorage.getItem('bg_date');
-    const cachedUrl = localStorage.getItem('bg_url');
-
-    if (cachedDate === today && cachedUrl) {
-        document.body.style.backgroundImage = `url(${cachedUrl})`;
-        return;
-    }
-
-    try {
-        const res = await fetch('https://source.unsplash.com/1920x1080/?landscape,nature,scotland');
-        localStorage.setItem('bg_date', today);
-        localStorage.setItem('bg_url', res.url);
-        document.body.style.backgroundImage = `url(${res.url})`;
-    } catch {
-        // fallback: keep dark background
-    }
+    const seed = today.replace(/\s/g, '-');
+    const url = `https://source.unsplash.com/1920x1080/?landscape,nature,scotland&sig=${seed}`;
+    document.body.style.backgroundImage = `url(${url})`;
 }
 fetchDailyBackground();
