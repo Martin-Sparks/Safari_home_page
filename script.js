@@ -39,20 +39,42 @@ async function fetchWeather() {
         const area = data.nearest_area[0];
 
         const city = area.areaName[0].value;
-        const tempF = c.temp_F;
-        const feelsF = c.FeelsLikeF;
+        const tempC = c.temp_C;
+        const feelsC = c.FeelsLikeC;
         const humidity = c.humidity;
         const desc = c.weatherDesc[0].value;
         const code = parseInt(c.weatherCode);
         const icon = weatherCodes[code] || '🌡️';
 
         document.getElementById('weather-icon').textContent = icon;
-        document.getElementById('weather-temp').textContent = `${tempF}°F`;
+        document.getElementById('weather-temp').textContent = `${tempC}°C`;
         document.getElementById('weather-desc').textContent = desc;
         document.getElementById('weather-meta').textContent =
-            `${city}  ·  Feels like ${feelsF}°  ·  ${humidity}% humidity`;
+            `${city}  ·  Feels like ${feelsC}°  ·  ${humidity}% humidity`;
     } catch {
         document.getElementById('weather-desc').textContent = 'Weather unavailable';
     }
 }
 fetchWeather();
+
+// Daily background via Unsplash
+async function fetchDailyBackground() {
+    const today = new Date().toDateString();
+    const cachedDate = localStorage.getItem('bg_date');
+    const cachedUrl = localStorage.getItem('bg_url');
+
+    if (cachedDate === today && cachedUrl) {
+        document.body.style.backgroundImage = `url(${cachedUrl})`;
+        return;
+    }
+
+    try {
+        const res = await fetch('https://source.unsplash.com/1920x1080/?landscape,nature,scotland');
+        localStorage.setItem('bg_date', today);
+        localStorage.setItem('bg_url', res.url);
+        document.body.style.backgroundImage = `url(${res.url})`;
+    } catch {
+        // fallback: keep dark background
+    }
+}
+fetchDailyBackground();
