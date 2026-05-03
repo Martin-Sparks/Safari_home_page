@@ -55,7 +55,7 @@
         const seed = today.replace(/\s/g, '-');
         const url = `https://picsum.photos/seed/${seed}/1920/1080`;
 
-        if (url.includes('source.unsplash.com') && url.includes(seed)) {
+        if (url.includes('picsum.photos') && url.includes(seed)) {
             pass('t1', `URL: ${url}`);
         } else {
             fail('t1', `Unexpected URL: ${url}`);
@@ -76,7 +76,7 @@
         const el = document.getElementById('preview');
         el.style.backgroundImage = `url(${url})`;
         const applied = el.style.backgroundImage;
-        if (applied && applied.includes('unsplash.com')) {
+        if (applied && applied.includes('picsum.photos')) {
             pass('t3', `backgroundImage set: ${applied}`);
         } else {
             fail('t3', `backgroundImage not applied. Got: "${applied}"`);
