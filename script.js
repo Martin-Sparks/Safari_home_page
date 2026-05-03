@@ -15,23 +15,44 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-// Hacker News ticker
-async function fetchNews() {
+// Weather
+const weatherCodes = {
+    113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️',
+    143: '🌫️', 176: '🌦️', 179: '🌨️', 182: '🌧️',
+    185: '🌧️', 200: '⛈️', 227: '🌨️', 230: '❄️',
+    248: '🌫️', 260: '🌫️', 263: '🌦️', 266: '🌧️',
+    281: '🌧️', 284: '🌧️', 293: '🌦️', 296: '🌧️',
+    299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️',
+    311: '🌧️', 314: '🌧️', 317: '🌨️', 320: '🌨️',
+    323: '🌨️', 326: '🌨️', 329: '❄️', 332: '❄️',
+    335: '❄️', 338: '❄️', 350: '🌧️', 353: '🌦️',
+    356: '🌧️', 359: '🌧️', 362: '🌨️', 365: '🌨️',
+    368: '🌨️', 371: '❄️', 374: '🌨️', 377: '🌨️',
+    386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '❄️',
+};
+
+async function fetchWeather() {
     try {
-        const rssUrl = encodeURIComponent('https://news.ycombinator.com/rss');
-        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+        const res = await fetch('https://wttr.in/Edinburgh?format=j1');
         const data = await res.json();
+        const c = data.current_condition[0];
+        const area = data.nearest_area[0];
 
-        const track = document.getElementById('ticker-track');
-        track.innerHTML = data.items
-            .map(item => `<a href="${item.link}" target="_blank">${item.title}</a>`)
-            .join('');
+        const city = area.areaName[0].value;
+        const tempF = c.temp_F;
+        const feelsF = c.FeelsLikeF;
+        const humidity = c.humidity;
+        const desc = c.weatherDesc[0].value;
+        const code = parseInt(c.weatherCode);
+        const icon = weatherCodes[code] || '🌡️';
 
-        // Scale animation duration to content length for consistent scroll speed
-        const duration = Math.max(40, data.items.length * 6);
-        track.style.animationDuration = `${duration}s`;
+        document.getElementById('weather-icon').textContent = icon;
+        document.getElementById('weather-temp').textContent = `${tempF}°F`;
+        document.getElementById('weather-desc').textContent = desc;
+        document.getElementById('weather-meta').textContent =
+            `${city}  ·  Feels like ${feelsF}°  ·  ${humidity}% humidity`;
     } catch {
-        document.getElementById('ticker-track').textContent = 'News feed temporarily offline';
+        document.getElementById('weather-desc').textContent = 'Weather unavailable';
     }
 }
-fetchNews();
+fetchWeather();

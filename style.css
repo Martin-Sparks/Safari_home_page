@@ -201,8 +201,8 @@ main {
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
 }
 
-/* News ticker */
-.ticker-bar {
+/* Weather bar */
+.weather-bar {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -210,56 +210,35 @@ main {
     z-index: 10;
     display: flex;
     align-items: center;
+    gap: 10px;
+    padding: 0 20px;
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-top: 1px solid var(--border);
-    height: 36px;
-    overflow: hidden;
+    height: 38px;
 }
 
-.ticker-label {
+.weather-icon {
+    font-size: 1rem;
     flex-shrink: 0;
-    padding: 0 14px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    background: var(--accent);
-    color: #000;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
 }
 
-.ticker-viewport {
-    flex: 1;
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    align-items: center;
+.weather-temp {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    flex-shrink: 0;
 }
 
-.ticker-track {
-    display: inline-block;
-    white-space: nowrap;
-    animation: tickerScroll 80s linear infinite;
+.weather-desc {
     font-size: 0.78rem;
     color: var(--muted);
+    flex-shrink: 0;
 }
 
-.ticker-track a {
-    color: var(--muted);
-    text-decoration: none;
-    margin-right: 3.5rem;
-    transition: color 0.15s;
-}
-
-.ticker-track a:hover {
-    color: var(--text);
-}
-
-@keyframes tickerScroll {
-    from { transform: translateX(100vw); }
-    to   { transform: translateX(-100%); }
+.weather-meta {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-left: auto;
 }
